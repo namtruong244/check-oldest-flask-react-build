@@ -4,7 +4,7 @@ import os
 import traceback
 
 from dotenv import load_dotenv
-from flask import Flask, request
+from flask import Flask, request, send_from_directory
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
@@ -22,7 +22,7 @@ load_dotenv()
 
 
 # create the flask object
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='', static_folder='frontend/build')
 
 CORS(app)
 
@@ -38,6 +38,11 @@ PORT = os.environ.get("PORT")
 
 flask_bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
+
+
+@app.route("/", defaults={'path': ''})
+def serve(path):
+    return send_from_directory(app.static_folder, 'index.html')
 
 
 @app.before_request
