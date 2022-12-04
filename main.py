@@ -154,7 +154,7 @@ def speech_recognizer_to_text():
         file_name = str(uuid.uuid4())
         path_file = os.path.join(app.config["UPLOAD_FOLDER"], f"{file_name}.wav")
         file.save(path_file)
-        result = content_service.get_text_from_speech(file_name, dict(request.values))
+        result = content_service.get_text_from_speech(path_file, dict(request.values))
         os.remove(path_file)
 
         if result["ok"] is False:
