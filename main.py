@@ -29,7 +29,7 @@ CORS(app)
 app.config["JWT_SECRET_KEY"] = "c6e1cfc4e90bb9e71da16bc217017b87b0eedd3c3ffdde0e2d777ddca0a88597"
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = datetime.timedelta(days=5)
 app.config["JSON_SORT_KEYS"] = False
-app.config['UPLOAD_FOLDER'] = CmnConst.UPLOAD_FOLDER
+# app.config['UPLOAD_FOLDER'] = CmnConst.UPLOAD_FOLDER
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 
@@ -153,9 +153,9 @@ def speech_recognizer_to_text():
     if file and CmnUtil.check_allowed_file(file.filename):
         file_name = str(uuid.uuid4())
         path_file = os.path.join(app.config["UPLOAD_FOLDER"], f"{file_name}.wav")
-        file.save(path_file)
-        result = content_service.get_text_from_speech(path_file, dict(request.values))
-        os.remove(path_file)
+        file.save(f"{file_name}.wav")
+        result = content_service.get_text_from_speech(file_name, dict(request.values))
+        os.remove(f"{file_name}.wav")
 
         if result["ok"] is False:
             return CmnUtil.response_error(result["message"], http_status_code=200)
