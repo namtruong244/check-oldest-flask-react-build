@@ -152,7 +152,7 @@ def speech_recognizer_to_text():
 
     if file and CmnUtil.check_allowed_file(file.filename):
         file_name = str(uuid.uuid4())
-        path_file = os.path.join(app.config["UPLOAD_FOLDER"], f"{file_name}.wav")
+        # path_file = os.path.join(app.config["UPLOAD_FOLDER"], f"{file_name}.wav")
         file.save(f"{file_name}.wav")
         result = content_service.get_text_from_speech(file_name, dict(request.values))
         os.remove(f"{file_name}.wav")
