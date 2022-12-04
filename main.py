@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from flask import Flask, request, send_from_directory
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
 from flask_bcrypt import Bcrypt
-# from flask_cors import CORS
+from flask_cors import CORS
 
 from exceptions.cmn_error import CmnError
 from models.cmn_model import CmnModel
@@ -24,7 +24,7 @@ load_dotenv()
 # create the flask object
 app = Flask(__name__, static_url_path='', static_folder='frontend/build')
 
-# CORS(app)
+CORS(app)
 
 app.config["JWT_SECRET_KEY"] = "c6e1cfc4e90bb9e71da16bc217017b87b0eedd3c3ffdde0e2d777ddca0a88597"
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = datetime.timedelta(days=5)
@@ -152,8 +152,7 @@ def speech_recognizer_to_text():
 
     if file and CmnUtil.check_allowed_file(file.filename):
         file_name = str(uuid.uuid4())
-        file_name_with_extension = file_name + ".wav"
-        path_file = os.path.join(app.config["UPLOAD_FOLDER"], file_name_with_extension)
+        path_file = os.path.join(app.config["UPLOAD_FOLDER"], f"{file_name}.wav")
         file.save(path_file)
         result = content_service.get_text_from_speech(file_name, dict(request.values))
         os.remove(path_file)
