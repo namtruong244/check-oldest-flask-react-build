@@ -6,7 +6,6 @@ from pydub import AudioSegment
 from pydub.silence import split_on_silence
 import speech_recognition as sr
 
-from main import app
 from models.content_model import ContentModel
 from models.user_model import UserModel
 from config.cmn_const import CmnConst
@@ -122,8 +121,8 @@ def compare_text_result(request):
 
 def get_text_from_speech(file_name, request):
     text_recognizer = ""
-    path_file = os.path.join(app.config["UPLOAD_FOLDER"], f"{file_name}.wav")
-    path_file_temp = os.path.join(app.config["UPLOAD_FOLDER"], f"{file_name}_temp")
+    path_file = os.path.join(CmnConst.UPLOAD_FOLDER, f"{file_name}.wav")
+    path_file_temp = os.path.join(CmnConst.UPLOAD_FOLDER, f"{file_name}_temp")
     for audio_chunk in __load_chunks(path_file):
         audio_chunk.export(path_file_temp, format="wav")
         with sr.AudioFile(path_file_temp) as source:
