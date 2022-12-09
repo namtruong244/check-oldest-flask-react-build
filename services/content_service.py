@@ -38,6 +38,22 @@ def get_all_content():
     return {"contents": data}
 
 
+def get_statistic_info():
+    content_model = ContentModel()
+    cursor = content_model.count_content_of_user()
+
+    data = []
+    for record in cursor:
+        data.append({
+            "total": record["TOTAL_CONTENT"],
+            "userName": record["USERNAME"],
+            "fullName": record["FULLNAME"],
+            "email": record["EMAIL"]
+        })
+
+    return {"statistic": data}
+
+
 def create_new_content(request, current_user):
     user_model = UserModel()
     cursor = user_model.get_user_by_username_and_email(current_user)

@@ -176,6 +176,14 @@ def test_content():
     return CmnUtil.response_success(result["data"])
 
 
+@app.route("/api/statistic", methods=["GET"])
+@jwt_required()
+def get_statistic_info():
+    """ Get all content endpoint """
+
+    return CmnUtil.response_success(content_service.get_statistic_info())
+
+
 if __name__ == "__main__":
     logging.info("running environment: %s", os.environ.get("ENV"))
     app.config["DEBUG"] = os.environ.get("ENV") == "development"  # Debug mode if development env
