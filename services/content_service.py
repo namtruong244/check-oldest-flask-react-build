@@ -29,6 +29,7 @@ def get_all_content():
             "userName": record["USERNAME"],
             "fullName": record["FULLNAME"],
             "email": record["EMAIL"],
+            "avatarType": record["AVATAR_TYPE"],
             "content": record["CONTENT"],
             "classType": record["CLASS_TYPE"],
             "languageType": record["LANGUAGE_TYPE"],
@@ -48,7 +49,8 @@ def get_statistic_info():
             "total": record["TOTAL_CONTENT"],
             "userName": record["USERNAME"],
             "fullName": record["FULLNAME"],
-            "email": record["EMAIL"]
+            "email": record["EMAIL"],
+            "avatarType": record["AVATAR_TYPE"],
         })
 
     return {"statistic": data}

@@ -39,7 +39,7 @@ def register_user(request):
 
 def auth_user(request):
     user_model = UserModel()
-    column = ["USERNAME", "FULLNAME", "EMAIL", "PASSWORD"]
+    column = ["USERNAME", "FULLNAME", "EMAIL", "PASSWORD", "AVATAR_TYPE"]
     condition = {"USERNAME": request["username"], "DELETE_FLG": CmnConst.DELETE_FLG_OFF}
     cursor = user_model.select_data(column, condition)
     if cursor.rowcount == 0:
@@ -50,7 +50,8 @@ def auth_user(request):
         identity = {
             "username": user["USERNAME"],
             "fullname": user["FULLNAME"],
-            "email": user["EMAIL"]
+            "email": user["EMAIL"],
+            "avatarType": user["AVATAR_TYPE"]
         }
         access_token = create_access_token(identity=identity)
         identity["token"] = access_token
@@ -62,3 +63,17 @@ def auth_user(request):
         return {"ok": True, "data": identity}
 
     return {"ok": False, "message": "Invalid username or password"}
+
+
+def update_user(request, current_user):
+    user_model = UserModel()
+    user_model.begin()
+    data = {"AVATAR_TYPE": request["avatarType"]}
+    condition = {"USERNAME": current_user["username"], "DELETE_FLG": CmnConst.DELETE_FLG_OFF}
+    cursor = user_model.update_data(data, condition)
+    if cursor.rowcount == 0:
+        user_model.rollback()
+        return {"ok": False, "message": "Save user failed"}
+
+    user_model.commit()
+    return {"ok": True, "message": "Save user successful"}

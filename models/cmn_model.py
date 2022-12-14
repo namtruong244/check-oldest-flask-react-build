@@ -81,6 +81,24 @@ class CmnModel(ABC):
         sql += f"({','.join(column)}) VALUES ({','.join(value)})"
         return self.query(sql, params)
 
+    def update_data(self, data: dict, condition: dict):
+        logging.info(sys._getframe().f_code.co_name)
+
+        sql = f"UPDATE {self.get_table()} SET "
+        column, params = [], []
+        for key, val in data.items():
+            column.append(f"`{key}` = %s")
+            params.append(val)
+
+        sql += f"{','.join(column)}, " \
+               "`UPDATE_DATETIME` = NOW() " \
+               "WHERE 1=1"
+
+        for key, val in condition.items():
+            sql += f" AND {key} = %s "
+            params.append(val)
+        return self.query(sql, params)
+
     def get_sql_condition(self, condition: dict):
         where, params = [], []
         for key, val in condition.items():

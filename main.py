@@ -102,6 +102,19 @@ def auth_user():
     return CmnUtil.response_success(result["data"])
 
 
+@app.route("/api/user", methods=["PUT"])
+@jwt_required()
+def update_user():
+    """ Update user endpoint """
+
+    current_user = get_jwt_identity()
+    result = user_service.update_user(request.get_json(), current_user)
+    if result["ok"] is False:
+        return CmnUtil.response_error(result["message"], http_status_code=400)
+
+    return CmnUtil.response_success_create(result["message"])
+
+
 @app.route("/api/content", methods=["GET"])
 @jwt_required()
 def get_all_content():
