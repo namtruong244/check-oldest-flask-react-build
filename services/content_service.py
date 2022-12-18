@@ -40,8 +40,8 @@ def get_all_content():
 
 
 def get_statistic_info():
-    content_model = ContentModel()
-    cursor = content_model.count_content_of_user()
+    user_model = UserModel()
+    cursor = user_model.count_content_of_user()
 
     data = []
     for record in cursor:

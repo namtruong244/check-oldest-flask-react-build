@@ -28,8 +28,7 @@ def get_rule(validate_type):
                 "pattern": "^[\x00-\x7F]*$"
             }
         },
-        "required": ["username", "password"],
-        "additionalProperties": False
+        "required": ["username", "password"]
     }
 
     if validate_type == "register":

@@ -30,3 +30,33 @@ class UserModel(CmnModel):
         ]
 
         return self.query(sql, params)
+
+    def count_content_of_user(self):
+        sql = (
+            "SELECT "
+            "  COUNT(ct.ID) AS TOTAL_CONTENT, "
+            "  u.USERNAME, "
+            "  u.FULLNAME, "
+            "  u.EMAIL, "
+            "  u.AVATAR_TYPE "
+            "FROM "
+            "  USER AS u "
+            "  LEFT JOIN CONTENT as ct ON "
+            "    u.USER_ID = ct.USER_ID AND "
+            "    u.DELETE_FLG = %s AND "
+            "    ct.DELETE_FLG = %s "
+            "GROUP BY "
+            "  u.USERNAME, "
+            "  u.FULLNAME, "
+            "  u.EMAIL,"
+            "  u.AVATAR_TYPE "
+            "ORDER BY "
+            "  TOTAL_CONTENT DESC"
+        )
+
+        params = [
+            CmnConst.DELETE_FLG_OFF,
+            CmnConst.DELETE_FLG_OFF
+        ]
+
+        return self.query(sql, params)
